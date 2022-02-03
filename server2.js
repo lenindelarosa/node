@@ -14,7 +14,7 @@ let basement = 0;
 for (let i=0; i<santaFile.length;i++){
     if(santaFile[i]==='('){
         floorCount++;
-    } else {
+    } else if (santaFile[i]===')'){
         floorCount--;
     }
     if (floorCount==-1){
