@@ -1,8 +1,12 @@
 const { response } = require('express');
 const express = require('express');
+const bcrypt = require('bcrypt-nodejs');
+const cors = require('cors')
+
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 const database = {
     users: [
@@ -22,7 +26,12 @@ const database = {
             entries: 0,
             joined: new Date()
         }
-    ]
+    ],
+    login: {
+        id: '987',
+        has: '',
+        email: 'Miguel@gmail.com'
+    }
 }
 
 app.get('/', (req, res)=>{
@@ -32,7 +41,7 @@ app.get('/', (req, res)=>{
 app.post('/signin', (req,res)=>{
     if (req.body.email === database.users[0].email &&
         req.body.password === database.users[0].password){
-                res.json('Logged in!')
+                res.json(database.users[0])
     } else {
         res.json('Wrong username/password');
     }
@@ -41,11 +50,11 @@ app.post('/signin', (req,res)=>{
 
 app.post('/register', (req, res)=>{
     const { name, email, password } = req.body;
+
     database.users.push({
         id: '125',
         name: name,
         email: email,
-        password: password,
         entries: 0,
         joined: new Date()
     })
@@ -66,7 +75,7 @@ app.get('/profile/:id', (req, res)=>{
     }
 })
 
-app.post('/image', (req, res) => {
+app.put('/image', (req, res) => {
     const { id } = req.body;
     let found = false;
     database.users.forEach(user => {
